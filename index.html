@@ -227,6 +227,85 @@
       border: 2px solid var(--warn);
       background: #fff;
     }
+    .calc-card {
+      background: #F7F4EE;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+    .calc-card h3 {
+      margin: 0 0 6px;
+      font-size: 1.02rem;
+      color: var(--navy);
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    @media (max-width: 460px) {
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+    }
+    input[type="number"] {
+      width: 100%;
+      font: inherit;
+      padding: 12px 10px;
+      border-radius: 12px;
+      border: 1px solid #C9C1B3;
+      background: #fff;
+      color: var(--ink);
+      min-height: 46px;
+    }
+    .status-box {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .status-ok { background: #ECFDF5; border-color: #0F766E; color: #065F46; }
+    .status-warn { background: #FFFBEB; border-color: #D97706; color: #92400E; }
+    .status-crit { background: #FEF2F2; border-color: #DC2626; color: #991B1B; }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin: 4px 0;
+      font-size: .95rem;
+    }
+    .stat-row strong { font-size: 1.05rem; }
+    .ders-satir {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) 72px 92px 44px;
+      gap: 6px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .ders-satir input, .ders-satir select {
+      min-height: 44px;
+      padding: 8px 8px;
+      font-size: .9rem;
+    }
+    .btn-del {
+      min-height: 44px;
+      padding: 0;
+      background: #FEE2E2;
+      color: #991B1B;
+      border: 1px solid #FCA5A5;
+      border-radius: 10px;
+      font-size: 1.1rem;
+    }
+    .btn-sm {
+      min-height: 42px;
+      padding: 8px 12px;
+      font-size: .85rem;
+      border-radius: 10px;
+    }
+    .btn-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
     footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 8px 16px 24px; }
   </style>
 </head>
@@ -240,6 +319,7 @@
   </header>
   <nav aria-label="Bölümler">
     <a href="#calis">Çalış / Quiz</a>
+    <a href="#hesaplayicilar">Hesaplayıcılar</a>
     <a href="#kaynaklar">Kaynaklar</a>
     <a href="#videolar">Videolar</a>
     <a href="#itu">İTÜ</a>
@@ -372,6 +452,73 @@
         <a href="https://geomatik.itu.edu.tr/egitim/lisans/dersler" target="_blank" rel="noopener">İTÜ Harita Müh. Lisans Dersleri<small>Ders planı, formlar ve başarı kriterleri</small></a>
         <a href="https://www.takvim.sis.itu.edu.tr/AkademikTakvim/TR/akademik-takvim/index.php" target="_blank" rel="noopener">İTÜ akademik takvim</a>
         <a href="https://ilc.itu.edu.tr" target="_blank" rel="noopener">ILC – bireysel çalışma merkezi<small>Örnek essay’ler, gramer ve dinleme</small></a>
+      </div>
+    </section>
+
+    <section id="hesaplayicilar">
+      <h2>Hesaplayıcılar</h2>
+      <p class="lead">Yalnızca senin cihazında çalışır; dışarı veri göndermez, değerler cihazında saklanır.</p>
+
+      <div class="calc-card" id="devamKart">
+        <h3>1) Hazırlık Devamsızlık Takibi (%85 Şartı)</h3>
+        <p class="hint" style="margin-top:0">YDY Yönetmeliği md. 6: En az %85 devam zorunludur (azami devamsızlık %15 = H × hafta × 0,15).</p>
+        <div class="grid-3">
+          <div>
+            <label for="devHaftalik">Haftalık saat (H)</label>
+            <input type="number" id="devHaftalik" min="1" max="40" step="0.5" value="20" inputmode="decimal">
+          </div>
+          <div>
+            <label for="devHafta">Dönem haftası</label>
+            <input type="number" id="devHafta" min="1" max="20" step="1" value="14" inputmode="numeric">
+          </div>
+          <div>
+            <label for="devKacirilan">Kaçırılan saat</label>
+            <input type="number" id="devKacirilan" min="0" max="200" step="0.5" value="0" inputmode="decimal">
+          </div>
+        </div>
+        <div id="devamSonuc" class="status-box status-ok" role="status"></div>
+      </div>
+
+      <div class="calc-card" id="agnoKart">
+        <h3>2) İTÜ AGNO &amp; Harf Notu Hesaplayıcı</h3>
+        <p class="hint" style="margin-top:0">Resmî İTÜ ölçeği (Resmî Gazete 4 Aralık 2023, md. 20): AA 4.00’dan FF/VF 0.00’a (+ ara notlar dahil).</p>
+
+        <div class="grid-2">
+          <div>
+            <label for="oncekiKredi">Önceki kredi (varsa)</label>
+            <input type="number" id="oncekiKredi" min="0" max="250" step="0.5" value="0" inputmode="decimal">
+          </div>
+          <div>
+            <label for="oncekiAgno">Önceki AGNO (varsa)</label>
+            <input type="number" id="oncekiAgno" min="0" max="4" step="0.01" value="0" inputmode="decimal">
+          </div>
+        </div>
+
+        <div id="dersSatirlari" style="margin-top:8px"></div>
+
+        <div class="btn-actions">
+          <button type="button" class="btn-copy btn-sm" id="btnDersEkle">+ Ders ekle</button>
+          <button type="button" class="btn-ghost btn-sm" id="btnPaketYukle">Bahar irregular örneği</button>
+          <button type="button" class="btn-ghost btn-sm" id="btnAgnoSifirla">Sıfırla</button>
+        </div>
+
+        <div id="agnoSonuc" class="status-box" role="status"></div>
+
+        <div class="grid-2" style="margin-top:10px">
+          <div>
+            <label for="hedefAgno">Hedef AGNO</label>
+            <select id="hedefAgno">
+              <option value="3.00">3.00 (Onur / ÇAP tabanı)</option>
+              <option value="3.50">3.50 (Yüksek Onur)</option>
+              <option value="4.00" selected>4.00 (Tam puan)</option>
+            </select>
+          </div>
+          <div>
+            <label for="kalanKredi">Kalan planlanan kredi</label>
+            <input type="number" id="kalanKredi" min="0" max="200" step="0.5" value="15" inputmode="decimal">
+          </div>
+        </div>
+        <div id="hedefSonuc" class="status-box" role="status"></div>
       </div>
     </section>
 
@@ -622,6 +769,299 @@
       const url = q ? "https://www.wolframalpha.com/input?i=" + encodeURIComponent(q) : "https://www.wolframalpha.com/";
       openExternal(url);
     });
+
+    // --- Hesaplayıcılar (Tamamen istemci taraflı, localStorage) ---
+    const ITU_NOTLAR = [
+      { harf: "AA", puan: 4.00 },
+      { harf: "BA+", puan: 3.75 },
+      { harf: "BA", puan: 3.50 },
+      { harf: "BB+", puan: 3.25 },
+      { harf: "BB", puan: 3.00 },
+      { harf: "CB+", puan: 2.75 },
+      { harf: "CB", puan: 2.50 },
+      { harf: "CC+", puan: 2.25 },
+      { harf: "CC", puan: 2.00 },
+      { harf: "DC+", puan: 1.75 },
+      { harf: "DC", puan: 1.50 },
+      { harf: "DD+", puan: 1.25 },
+      { harf: "DD", puan: 1.00 },
+      { harf: "FF", puan: 0.00 },
+      { harf: "VF", puan: 0.00 }
+    ];
+    const NOT_PUAN = Object.fromEntries(ITU_NOTLAR.map((n) => [n.harf, n.puan]));
+
+    function calcDevamsizlik(haftalik, hafta, kacirilan) {
+      const h = Math.max(0, Number(haftalik) || 0);
+      const w = Math.max(1, Number(hafta) || 14);
+      const k = Math.max(0, Number(kacirilan) || 0);
+      const toplam = h * w;
+      const hak = toplam * 0.15;
+      const raporLimit = toplam * 0.10;
+      const kalan = hak - k;
+      const devamYuzde = toplam > 0 ? ((toplam - k) / toplam) * 100 : 100;
+      let seviye = "ok";
+      let mesaj = "Devam durumu güvenli (%90 ve üzeri).";
+      if (kalan < 0 || devamYuzde < 85) {
+        seviye = "crit";
+        mesaj = "Kritik: Devam %85’in altında! Güz ve bahar İYS hakkı yanar (Yönetmelik md. 6).";
+      } else if (devamYuzde < 90) {
+        seviye = "warn";
+        mesaj = "Dikkat: %85 sınırına yaklaşıyorsun; kalan devamsızlık hakkını koru.";
+      }
+      return { toplam, hak, raporLimit, kalan, devamYuzde, seviye, mesaj };
+    }
+
+    function renderDevamsizlik() {
+      const h = document.getElementById("devHaftalik").value;
+      const w = document.getElementById("devHafta").value;
+      const k = document.getElementById("devKacirilan").value;
+      try {
+        localStorage.setItem("elif_devam_v1", JSON.stringify({ h, w, k }));
+      } catch (e) {}
+      const r = calcDevamsizlik(h, w, k);
+      const box = document.getElementById("devamSonuc");
+      box.className = "status-box status-" + r.seviye;
+      box.innerHTML =
+        '<div class="stat-row"><span>Toplam dönem saati</span><strong>' + r.toplam.toFixed(1) + ' saat</strong></div>' +
+        '<div class="stat-row"><span>Azami devamsızlık hakkı (%15)</span><strong>' + r.hak.toFixed(1) + ' saat</strong></div>' +
+        '<div class="stat-row"><span>Kalan devamsızlık hakkı</span><strong>' + r.kalan.toFixed(1) + ' saat</strong></div>' +
+        '<div class="stat-row"><span>Mevcut devam oranı</span><strong>%' + Math.max(0, r.devamYuzde).toFixed(1) + '</strong></div>' +
+        '<p class="hint" style="margin-top:8px;color:inherit;font-weight:600">' + r.mesaj + '</p>' +
+        '<p class="hint" style="margin-top:4px;color:inherit">Sağlık raporu üst sınırı (%10): en fazla ' + r.raporLimit.toFixed(1) + ' saat.</p>';
+    }
+
+    (function initDevam() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("elif_devam_v1") || "null");
+        if (saved) {
+          if (saved.h !== undefined) document.getElementById("devHaftalik").value = saved.h;
+          if (saved.w !== undefined) document.getElementById("devHafta").value = saved.w;
+          if (saved.k !== undefined) document.getElementById("devKacirilan").value = saved.k;
+        }
+      } catch (e) {}
+      ["devHaftalik", "devHafta", "devKacirilan"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", renderDevamsizlik);
+      });
+      renderDevamsizlik();
+    })();
+
+    const BAHAR_ORNEK = [
+      { ad: "MAT 103E", kredi: 4, harf: "AA" },
+      { ad: "FIZ 101E", kredi: 3, harf: "AA" },
+      { ad: "FIZ 101EL", kredi: 1, harf: "AA" },
+      { ad: "GEO 108E", kredi: 2, harf: "AA" },
+      { ad: "ING 112A", kredi: 2, harf: "AA" }
+    ];
+
+    let agnoState = {
+      oncekiKredi: 0,
+      oncekiAgno: 0,
+      hedef: "4.00",
+      kalanKredi: 15,
+      dersler: BAHAR_ORNEK.map((d) => ({ ...d }))
+    };
+
+    function calcAgno(state) {
+      let donemKredi = 0;
+      let donemPuan = 0;
+      let ffVar = false;
+      state.dersler.forEach((d) => {
+        const kr = Math.max(0, Number(d.kredi) || 0);
+        const p = NOT_PUAN[d.harf] ?? 0;
+        if (kr > 0) {
+          donemKredi += kr;
+          donemPuan += kr * p;
+          if (d.harf === "FF" || d.harf === "VF") ffVar = true;
+        }
+      });
+      const yno = donemKredi > 0 ? donemPuan / donemKredi : 0;
+      const oncKr = Math.max(0, Number(state.oncekiKredi) || 0);
+      const oncAgno = Math.min(4, Math.max(0, Number(state.oncekiAgno) || 0));
+      const toplamKredi = oncKr + donemKredi;
+      const toplamPuan = (oncKr * oncAgno) + donemPuan;
+      const agno = toplamKredi > 0 ? toplamPuan / toplamKredi : 0;
+
+      const hedef = Math.min(4, Math.max(0, Number(state.hedef) || 4));
+      const kalan = Math.max(0, Number(state.kalanKredi) || 0);
+      let hedefDurum = "ok";
+      let hedefMesaj = "";
+      if (kalan <= 0) {
+        hedefDurum = "warn";
+        hedefMesaj = "Hesaplamak için kalan planlanan krediyi gir.";
+      } else {
+        const gereken = ((hedef * (toplamKredi + kalan)) - toplamPuan) / kalan;
+        const maxOlasi = ((toplamPuan + kalan * 4.0) / (toplamKredi + kalan));
+        if (gereken > 4.0001) {
+          hedefDurum = "crit";
+          hedefMesaj = "Kalan " + kalan + " kredinin tamamı AA (4.00) olsa bile en fazla " + maxOlasi.toFixed(2) + " AGNO’ya ulaşılır (" + hedef.toFixed(2) + " için gereken: " + gereken.toFixed(2) + ").";
+        } else if (gereken <= 0) {
+          hedefDurum = "ok";
+          hedefMesaj = hedef.toFixed(2) + " hedefi şimdiden güvende (kalan " + kalan + " kredide gereken ortalama ≤ 0.00).";
+        } else {
+          const yakin = ITU_NOTLAR.slice().reverse().find((n) => n.puan >= gereken - 1e-6) || ITU_NOTLAR[0];
+          hedefDurum = gereken > 3.75 ? "warn" : "ok";
+          hedefMesaj = "Kalan " + kalan + " kredide en az " + gereken.toFixed(2) + " ortalama gerekir (yaklaşık " + yakin.harf + " / " + yakin.puan.toFixed(2) + " düzeyi).";
+        }
+      }
+      return { donemKredi, yno, toplamKredi, toplamPuan, agno, ffVar, hedefDurum, hedefMesaj };
+    }
+
+    function saveAgnoState() {
+      try {
+        localStorage.setItem("elif_agno_v1", JSON.stringify(agnoState));
+      } catch (e) {}
+    }
+
+    function renderAgnoResults() {
+      const r = calcAgno(agnoState);
+      const box = document.getElementById("agnoSonuc");
+      let rozet = "Geliştirilebilir";
+      let cls = "status-box status-warn";
+      if (r.toplamKredi === 0) {
+        rozet = "Ders ekle";
+        cls = "status-box";
+      } else if (r.agno >= 3.50 && !r.ffVar) {
+        rozet = "Yüksek Onur bandı (≥ 3.50; dönem ≥ 18 kr şartıyla)";
+        cls = "status-box status-ok";
+      } else if (r.agno >= 3.00) {
+        rozet = "Onur / ÇAP taban bandı (≥ 3.00)";
+        cls = "status-box status-ok";
+      } else if (r.ffVar) {
+        rozet = "Dikkat: FF/VF var";
+        cls = "status-box status-crit";
+      }
+      box.className = cls;
+      box.innerHTML =
+        '<div class="stat-row"><span>Dönem kredisi / YNO</span><strong>' + r.donemKredi.toFixed(1) + ' kr · ' + r.yno.toFixed(2) + '</strong></div>' +
+        '<div class="stat-row"><span>Toplam kredi / AGNO</span><strong>' + r.toplamKredi.toFixed(1) + ' kr · ' + r.agno.toFixed(2) + '</strong></div>' +
+        '<p class="hint" style="margin-top:6px;color:inherit;font-weight:600">' + rozet + '</p>';
+
+      const hBox = document.getElementById("hedefSonuc");
+      hBox.className = "status-box status-" + r.hedefDurum;
+      hBox.innerHTML = '<strong>Hedef ' + Number(agnoState.hedef).toFixed(2) + ':</strong> ' + r.hedefMesaj;
+    }
+
+    function renderDersSatirlari() {
+      const wrap = document.getElementById("dersSatirlari");
+      wrap.innerHTML = "";
+      agnoState.dersler.forEach((d, idx) => {
+        const row = document.createElement("div");
+        row.className = "ders-satir";
+
+        const adInp = document.createElement("input");
+        adInp.type = "text";
+        adInp.placeholder = "Ders (ör. MAT 103E)";
+        adInp.value = d.ad;
+        adInp.setAttribute("aria-label", "Ders adı");
+        adInp.addEventListener("input", () => {
+          agnoState.dersler[idx].ad = adInp.value;
+          saveAgnoState();
+        });
+
+        const krInp = document.createElement("input");
+        krInp.type = "number";
+        krInp.min = "0";
+        krInp.max = "20";
+        krInp.step = "0.5";
+        krInp.inputMode = "decimal";
+        krInp.value = d.kredi;
+        krInp.setAttribute("aria-label", "Kredi");
+        krInp.addEventListener("input", () => {
+          agnoState.dersler[idx].kredi = krInp.value;
+          saveAgnoState();
+          renderAgnoResults();
+        });
+
+        const sel = document.createElement("select");
+        sel.setAttribute("aria-label", "Harf notu");
+        ITU_NOTLAR.forEach((n) => {
+          const opt = document.createElement("option");
+          opt.value = n.harf;
+          opt.textContent = n.harf + " (" + n.puan.toFixed(2) + ")";
+          if (n.harf === d.harf) opt.selected = true;
+          sel.appendChild(opt);
+        });
+        sel.addEventListener("change", () => {
+          agnoState.dersler[idx].harf = sel.value;
+          saveAgnoState();
+          renderAgnoResults();
+        });
+
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.className = "btn-del";
+        delBtn.textContent = "×";
+        delBtn.setAttribute("aria-label", "Dersi sil");
+        delBtn.addEventListener("click", () => {
+          agnoState.dersler.splice(idx, 1);
+          saveAgnoState();
+          renderDersSatirlari();
+          renderAgnoResults();
+        });
+
+        row.append(adInp, krInp, sel, delBtn);
+        wrap.appendChild(row);
+      });
+    }
+
+    (function initAgno() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("elif_agno_v1") || "null");
+        if (saved && Array.isArray(saved.dersler)) agnoState = saved;
+      } catch (e) {}
+
+      document.getElementById("oncekiKredi").value = agnoState.oncekiKredi ?? 0;
+      document.getElementById("oncekiAgno").value = agnoState.oncekiAgno ?? 0;
+      document.getElementById("hedefAgno").value = agnoState.hedef ?? "4.00";
+      document.getElementById("kalanKredi").value = agnoState.kalanKredi ?? 15;
+
+      document.getElementById("oncekiKredi").addEventListener("input", (e) => {
+        agnoState.oncekiKredi = e.target.value;
+        saveAgnoState();
+        renderAgnoResults();
+      });
+      document.getElementById("oncekiAgno").addEventListener("input", (e) => {
+        agnoState.oncekiAgno = e.target.value;
+        saveAgnoState();
+        renderAgnoResults();
+      });
+      document.getElementById("hedefAgno").addEventListener("change", (e) => {
+        agnoState.hedef = e.target.value;
+        saveAgnoState();
+        renderAgnoResults();
+      });
+      document.getElementById("kalanKredi").addEventListener("input", (e) => {
+        agnoState.kalanKredi = e.target.value;
+        saveAgnoState();
+        renderAgnoResults();
+      });
+
+      document.getElementById("btnDersEkle").addEventListener("click", () => {
+        agnoState.dersler.push({ ad: "", kredi: 3, harf: "AA" });
+        saveAgnoState();
+        renderDersSatirlari();
+        renderAgnoResults();
+      });
+      document.getElementById("btnPaketYukle").addEventListener("click", () => {
+        agnoState.dersler = BAHAR_ORNEK.map((d) => ({ ...d }));
+        saveAgnoState();
+        renderDersSatirlari();
+        renderAgnoResults();
+      });
+      document.getElementById("btnAgnoSifirla").addEventListener("click", () => {
+        agnoState.oncekiKredi = 0;
+        agnoState.oncekiAgno = 0;
+        agnoState.dersler = [{ ad: "", kredi: 3, harf: "AA" }];
+        document.getElementById("oncekiKredi").value = 0;
+        document.getElementById("oncekiAgno").value = 0;
+        saveAgnoState();
+        renderDersSatirlari();
+        renderAgnoResults();
+      });
+
+      renderDersSatirlari();
+      renderAgnoResults();
+    })();
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("sw.js").catch(function () {});
