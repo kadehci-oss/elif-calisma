@@ -252,22 +252,44 @@
       <p class="lead">Dersi ve çalışma biçimini seç. İstem hazırlanır; sen yalnızca gönderirsin.</p>
       <label for="ders">Ders</label>
       <select id="ders">
-        <option value="İngilizce Hazırlık P2 / İTÜ İngilizce Yeterlik Sınavı (İYS)">İngilizce Hazırlık P2 / İYS</option>
-        <option value="MAT 103E Mathematics I (Matematik I)">MAT 103E Matematik I</option>
-        <option value="MAT 104E Mathematics II (Matematik II)">MAT 104E Matematik II</option>
-        <option value="FIZ 101E Physics I (Fizik I)">FIZ 101E Fizik I</option>
-        <option value="FIZ 102E Physics II (Fizik II)">FIZ 102E Fizik II</option>
-        <option value="KIM 101E General Chemistry (Genel Kimya)">KIM 101E Genel Kimya</option>
-        <option value="GEO derslerine giriş (Geomatik / Harita Mühendisliği birinci sınıf: ölçme, analitik geometri, vektör, programlama)">GEO giriş</option>
-        <option value="Python programlamaya giriş (NumPy / temel yazılım, GEO 108E düzeyinde)">Python</option>
+        <optgroup label="Hazırlık (YDY)">
+          <option value="İngilizce Hazırlık P2 / İTÜ İngilizce Yeterlik Sınavı (İYS)">İngilizce Hazırlık P2 / İYS</option>
+        </optgroup>
+        <optgroup label="1. Sınıf — 1. Yarıyıl (Harita / Geomatik Müh.)">
+          <option value="MAT 103E Mathematics I (Matematik I)">MAT 103E Matematik I</option>
+          <option value="FIZ 101E Physics I (Fizik I)">FIZ 101E Fizik I</option>
+          <option value="FIZ 101EL Physics I Laboratory (Fizik I Laboratuvarı: ölçme, hata hesabı, deney raporu)">FIZ 101EL Fizik I Lab</option>
+          <option value="GEO 101E Intro. to Info. Technologies (Bilgi Teknolojilerine Giriş)">GEO 101E Bilgi Teknolojilerine Giriş</option>
+          <option value="GEO 103 Temel Ölçme Bilgisi (Fundamentals of Surveying)">GEO 103 Temel Ölçme Bilgisi</option>
+          <option value="GEO 109 Analitik Geometri ve Vektör Hesabı">GEO 109 Analitik Geometri &amp; Vektör</option>
+          <option value="GEO 111 Geomatik Mühendisliğine Giriş ve Etik">GEO 111 Geomatik Giriş ve Etik</option>
+          <option value="ING 100 EAP Through Global Goals (Küresel Hedefler Bağlamında Akademik İngilizce)">ING 100 Akademik İngilizce</option>
+        </optgroup>
+        <optgroup label="1. Sınıf — 2. Yarıyıl (Harita / Geomatik Müh.)">
+          <option value="MAT 104E Mathematics II (Matematik II)">MAT 104E Matematik II</option>
+          <option value="FIZ 102E Physics II (Fizik II)">FIZ 102E Fizik II</option>
+          <option value="FIZ 102EL Physics II Laboratory (Fizik II Laboratuvarı: devreler, deney raporu)">FIZ 102EL Fizik II Lab</option>
+          <option value="GEO 108E Fundamentals of Programming (Python ile Temel Programlama ve Ölçme Hesapları)">GEO 108E Python Programlama</option>
+          <option value="GEO 114 Yersel Ölçme Donanım ve Yazılımı">GEO 114 Yersel Ölçme Donanım/Yazılım</option>
+          <option value="ING 112A Basics of Academic Writing (Akademik Yazının Temelleri)">ING 112A Akademik Yazım</option>
+        </optgroup>
       </select>
       <label for="mod">Çalışma biçimi</label>
       <select id="mod">
-        <option value="anlatim">Konu anlatımı</option>
-        <option value="anlamadim">Anlamadığım yer</option>
-        <option value="soru">Soru çözümü (ipucu ile)</option>
-        <option value="quiz">10 soruluk quiz</option>
-        <option value="iys">İYS deneme bölümü</option>
+        <optgroup label="Genel Çalışma">
+          <option value="anlatim">Konu anlatımı</option>
+          <option value="anlamadim">Anlamadığım yer</option>
+          <option value="soru">Soru çözümü (ipucu ile)</option>
+          <option value="quiz">10 soruluk quiz</option>
+        </optgroup>
+        <optgroup label="Hazırlık (YDY) &amp; İYS Pratiği">
+          <option value="iys">İYS karma deneme bölümü</option>
+          <option value="iys_reading">İYS Okuma &amp; Dil Kullanımı (Cloze / Restatement / Reading)</option>
+          <option value="iys_writing">İYS Yazma (Kompozisyon &amp; Entegre Yazma)</option>
+          <option value="iys_listening">İYS Dinleme &amp; Not Alma (Metin + Soru)</option>
+          <option value="ydy_kelime">YDY P2 Kelime &amp; Dilbilgisi (B1+/B2)</option>
+          <option value="ydy_speaking">Hazırlık Konuşma &amp; Telaffuz (Sınıf içi)</option>
+        </optgroup>
       </select>
       <label for="konu">Konu veya soru (isteğe bağlı)</label>
       <textarea id="konu" placeholder="Örneğin: limit, Newton yasaları, akademik kompozisyon, bu paragrafı anlamadım…"></textarea>
@@ -315,7 +337,12 @@
         <a href="https://tr.khanacademy.org/science/9-sinif-fizik" target="_blank" rel="noopener">Khan Academy Türkçe – 9. sınıf fizik</a>
         <a href="https://www.khanacademy.org/math/calculus-1" target="_blank" rel="noopener">Khan Academy – Calculus 1<small>MAT 103E</small></a>
         <a href="https://tr.khanacademy.org/math" target="_blank" rel="noopener">Khan Academy Türkçe – Matematik</a>
-        <a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener">Khan Academy – Chemistry<small>KIM 101E</small></a>
+        <a href="https://www.khanacademy.org/math/linear-algebra" target="_blank" rel="noopener">Khan Academy – Linear Algebra<small>GEO 109 vektörler ve matrisler</small></a>
+        <a href="https://openstax.org/books/calculus-volume-3/pages/1-introduction" target="_blank" rel="noopener">OpenStax Calculus Volume 3<small>MAT 104E ve GEO 109 uzay geometrisi</small></a>
+        <a href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener">Python Resmi Öğreticisi<small>GEO 108E temel programlama</small></a>
+        <a href="https://developeap.weebly.com/" target="_blank" rel="noopener">Develop EAP (Açık Ders Kitabı)<small>ING 100 resmi ücretsiz kaynak</small></a>
+        <a href="https://www.youtube.com/playlist?list=PLSZfNc9tga921wNqkXUJ051x0OuaQ5GyH" target="_blank" rel="noopener">İTÜ ILC – Grammar (Intermediate-Plus)<small>P2/B1+ dilbilgisi videoları</small></a>
+        <a href="https://www.youtube.com/playlist?list=PLSZfNc9tga92Fohlz-8AvXH9dUDRpkaUo" target="_blank" rel="noopener">İTÜ ILC – Academic Writing<small>İYS kompozisyon ve paragraf videoları</small></a>
         <a href="https://openstax.org/books/university-physics-volume-1/pages/1-introduction" target="_blank" rel="noopener">OpenStax University Physics Volume 1<small>FIZ 101E, ücretsiz kitap</small></a>
         <a href="https://openstax.org/books/university-physics-volume-2/pages/1-introduction" target="_blank" rel="noopener">OpenStax University Physics Volume 2<small>FIZ 102E</small></a>
         <a href="https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/" target="_blank" rel="noopener">MIT OCW 8.01SC Classical Mechanics</a>
@@ -339,9 +366,12 @@
         <a href="https://ninova.itu.edu.tr" target="_blank" rel="noopener">Ninova<small>Ders dosyaları, ödev, duyuru</small></a>
         <a href="https://obs.itu.edu.tr" target="_blank" rel="noopener">OBS (Öğrenci Bilgi Sistemi)<small>Ders kayıt, notlar</small></a>
         <a href="https://ydy.itu.edu.tr" target="_blank" rel="noopener">Yabancı Diller Yüksekokulu</a>
-        <a href="https://ydy.itu.edu.tr/programlar/lisans-hazirlik-programi/yeterlik-sinavi" target="_blank" rel="noopener">İYS – yeterlik sınavı sayfası<small>Örnek sınav ve puan dağılımı</small></a>
+        <a href="https://ydy.itu.edu.tr/haberler" target="_blank" rel="noopener">YDY Duyurular<small>Aylık sınav saatleri ve sınıf listeleri</small></a>
+        <a href="https://ydy.itu.edu.tr/programlar/lisans-hazirlik-programi/yeterlik-sinavi" target="_blank" rel="noopener">İYS – yeterlik sınavı sayfası<small>Puan dağılımı ve kurallar</small></a>
+        <a href="https://ydy.itu.edu.tr/sinav-ornegi-ve-analizi" target="_blank" rel="noopener">İYS örnek sınav ve analiz<small>Resmi yeni format örneği</small></a>
+        <a href="https://geomatik.itu.edu.tr/egitim/lisans/dersler" target="_blank" rel="noopener">İTÜ Harita Müh. Lisans Dersleri<small>Ders planı, formlar ve başarı kriterleri</small></a>
         <a href="https://www.takvim.sis.itu.edu.tr/AkademikTakvim/TR/akademik-takvim/index.php" target="_blank" rel="noopener">İTÜ akademik takvim</a>
-        <a href="https://ilc.itu.edu.tr" target="_blank" rel="noopener">ILC – bireysel çalışma merkezi</a>
+        <a href="https://ilc.itu.edu.tr" target="_blank" rel="noopener">ILC – bireysel çalışma merkezi<small>Örnek essay’ler, gramer ve dinleme</small></a>
       </div>
     </section>
 
@@ -401,7 +431,12 @@
       anlamadim: "Öğrencinin takıldığı yeri bul. O adımı başka bir yoldan, daha basit bir dille ve günlük bir örnekle yeniden anlat. Eksik bir ön bilgi varsa önce onu tamamla.",
       soru: "Verilen soruyu (veya bu dersten uygun bir alıştırma sorusunu) birlikte çöz. Önce ipucu, sonra adım, en son tam çözüm.",
       quiz: "Bu dersten (ve belirtilen konudan) 10 soruluk bir quiz hazırla. Önce yalnızca soruları numaralandırarak göster. Cevap anahtarını ayrı bir bölümde, sorulardan sonra ve açık bir başlıkla ver. Her yanlış için kısa açıklama yazmayı teklif et.",
-      iys: "İTÜ İngilizce Yeterlik Sınavı (İYS) formatında kısa bir deneme bölümü hazırla. Sınav iki aşamadır: 1) dil kullanımı (metin tamamlama ve anlamca en yakın cümle) ile okuma; 2) akademik kompozisyon, entegre yazma ve not alarak dinleme. Öğrenci bir alt bölüm belirtmediyse okuma veya dil kullanımı denemesi yap. Önce soruları göster, cevap anahtarını sonra ver. Konuşma bölümü bu sınavda yoktur."
+      iys: "İTÜ İngilizce Yeterlik Sınavı (İYS) formatında kısa bir deneme bölümü hazırla (1. aşama: Cloze Test, Restatement, Okuma; 2. aşama: Akademik Kompozisyon, Entegre Yazma, Not Alarak Dinleme). İYS’de konuşma bölümü yoktur. Metin ve sorular İngilizce, açıklamalar Türkçe olsun. Önce yalnızca soruları ver; cevap anahtarını öğrenci yanıtladıktan sonra paylaş.",
+      iys_reading: "İTÜ İYS 1. Aşama formatında B1+/B2 düzeyinde İngilizce pratik hazırla: 1) 10 boşluklu bir Cloze Test (bağlaç, gramer, akademik kelime), 2) 5 adet Restatement (anlamca en yakın cümle) veya 500-700 sözcüklük 1 akademik Okuma metni + 6 soru (ana fikir, detay, çıkarım). Sorular İngilizce, yönerge ve açıklamalar Türkçe olsun. Önce sadece soruları göster; cevap anahtarını öğrenci cevaplayınca ver.",
+      iys_writing: "İTÜ İYS 2. Aşama Yazma pratiği yaptır (Akademik Kompozisyon 250-350 sözcük: 1 giriş + 2 gelişme + 1 sonuç; veya Entegre Yazma: kısa bir okuma + dinleme metni özeti sentezi). Eğer öğrenci bir yazı yapıştırdıysa İYS ölçütlerine göre (organizasyon, içerik/geliştirme, dilbilgisi, kelime) puanlayıp cümle cümle geliştir. Yazı yoksa güncel bir İYS konusu ver ve önce plan çıkarmasına yardım et.",
+      iys_listening: "İTÜ İYS 2. Aşama Not Alarak Dinleme (Note-taking Listening) pratiği hazırla: yaklaşık 600-800 sözcüklük B1+/B2 düzeyinde İngilizce bir akademik ders konuşması metni yaz (sesli okuyabilmesi veya dinletmesi için). Öğrenci 'soruları getir' diyene kadar soruları GİZLE; metni okuyup not aldıktan sonra 6-8 çoktan seçmeli soru sor ve ardından açıklamalı değerlendir.",
+      ydy_kelime: "İTÜ YDY P2 (B1+/B2) düzeyinde hedefli kelime (academic vocabulary, collocations, phrasal verbs) ve dilbilgisi (tenses, passive, relative/noun clauses, conditionals, bağlaçlar) çalışması yaptır. Her kelime için İngilizce örnek cümle ve Türkçe anlam ver; ardından 10 soruluk mini alıştırma sor (cevap anahtarını sonra ver).",
+      ydy_speaking: "İTÜ Hazırlık P2 sınıf içi iletişim için günlük ve akademik İngilizce konuşma / telaffuz pratiği yaptır (Not: İTÜ İYS sınavında konuşma bölümü yoktur, bu pratik sınıf içi akıcılık içindir). Karşılıklı kısa diyalog veya 1 dakikalık mini konuşma konusu ver, öğrencinin cümlelerini nazikçe düzelt ve doğal alternatifler öner."
     };
 
     function buildPrompt() {
@@ -420,9 +455,31 @@
     function refreshPreview() {
       document.getElementById("onizleme").textContent = buildPrompt();
     }
+    (function restorePrefs() {
+      try {
+        const d = localStorage.getItem("elif_ders");
+        const m = localStorage.getItem("elif_mod");
+        if (d) {
+          const sel = document.getElementById("ders");
+          if ([...sel.options].some((o) => o.value === d)) sel.value = d;
+        }
+        if (m) {
+          const sel = document.getElementById("mod");
+          if ([...sel.options].some((o) => o.value === m)) sel.value = m;
+        }
+      } catch (e) {}
+    })();
+
     ["ders", "mod", "konu"].forEach((id) => {
-      document.getElementById(id).addEventListener("input", refreshPreview);
-      document.getElementById(id).addEventListener("change", refreshPreview);
+      const el = document.getElementById(id);
+      const onChange = () => {
+        if (id === "ders" || id === "mod") {
+          try { localStorage.setItem("elif_" + id, el.value); } catch (e) {}
+        }
+        refreshPreview();
+      };
+      el.addEventListener("input", onChange);
+      el.addEventListener("change", onChange);
     });
     refreshPreview();
 
