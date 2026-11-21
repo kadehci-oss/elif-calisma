@@ -192,6 +192,41 @@
       z-index: 20;
     }
     .toast.show { display: block; }
+    #geminiYardim {
+      display: none;
+      margin-top: 14px;
+      background: #ECFDF5;
+      border: 2px solid var(--teal);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    #geminiYardim.show { display: block; }
+    #geminiYardim p { margin: 0 0 12px; font-weight: 700; font-size: 1.02rem; }
+    #geminiYardim .note {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: .9rem;
+      margin: 12px 0 0;
+    }
+    #geminiYardim .btn-gem-open {
+      display: flex;
+      width: 100%;
+      background: var(--gem);
+      color: #fff;
+    }
+    #istemKutuSarici { display: none; margin-top: 12px; }
+    #istemKutuSarici.show { display: block; }
+    #istemKutuSarici label { color: var(--warn); }
+    #istemKutu {
+      width: 100%;
+      min-height: 140px;
+      font: inherit;
+      font-size: .85rem;
+      padding: 12px;
+      border-radius: 12px;
+      border: 2px solid var(--warn);
+      background: #fff;
+    }
     footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 8px 16px 24px; }
   </style>
 </head>
@@ -237,12 +272,21 @@
       <label for="konu">Konu veya soru (isteğe bağlı)</label>
       <textarea id="konu" placeholder="Örneğin: limit, Newton yasaları, akademik kompozisyon, bu paragrafı anlamadım…"></textarea>
       <div class="btn-row">
-        <button type="button" class="btn-gpt" id="btnGpt">ChatGPT’de aç</button>
-        <button type="button" class="btn-claude" id="btnClaude">Claude’da aç</button>
+        <a class="btn btn-gpt" id="btnGpt" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">ChatGPT’de aç</a>
+        <a class="btn btn-claude" id="btnClaude" href="https://claude.ai/new" target="_blank" rel="noopener noreferrer">Claude’da aç</a>
         <button type="button" class="btn-gem" id="btnGem">Gemini</button>
         <button type="button" class="btn-copy" id="btnCopy">Kopyala</button>
       </div>
-      <p class="hint">ChatGPT ve Claude istemi yazı kutusuna yerleştirir, göndermez. Gemini URL’den istem almaz; istem panoya kopyalanır, sen yapıştırırsın.</p>
+      <p class="hint">ChatGPT ve Claude istemi yazı kutusuna yerleştirir, göndermez. Gemini URL’den istem almaz; önce kopyala, sonra yapıştır.</p>
+      <div id="geminiYardim" role="status">
+        <p id="geminiMesaj"></p>
+        <a class="btn btn-gem-open" id="geminiAc" href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer">Gemini’yi aç</a>
+        <p class="note">Giriş sorunu olursa Safari/Chrome’da ya da Gemini uygulamasında açıp yapıştır.</p>
+      </div>
+      <div id="istemKutuSarici">
+        <label for="istemKutu">İstem otomatik kopyalanamadı. Metin seçili; basılı tutup Kopyala’ya bas veya uzun basarak kopyala.</label>
+        <textarea id="istemKutu" readonly></textarea>
+      </div>
       <details>
         <summary>Hazırlanan istemi gör</summary>
         <pre id="onizleme"></pre>
@@ -390,42 +434,146 @@
       toast._id = setTimeout(() => t.classList.remove("show"), 2600);
     }
 
-    async function copyPrompt() {
-      const p = buildPrompt();
-      try {
-        await navigator.clipboard.writeText(p);
-        toast("İstem kopyalandı.");
-        return true;
-      } catch (e) {
-        toast("Otomatik kopyalanamadı. Aşağıdaki istemi elle kopyala.");
-        return false;
-      }
+    function showPromptBox(text) {
+      const wrap = document.getElementById("istemKutuSarici");
+      const box = document.getElementById("istemKutu");
+      box.value = text;
+      wrap.classList.add("show");
+      box.focus();
+      box.setSelectionRange(0, box.value.length);
     }
 
-    document.getElementById("btnGpt").addEventListener("click", () => {
-      const url = "https://chatgpt.com/?q=" + encodeURIComponent(buildPrompt());
-      window.open(url, "_blank", "noopener");
-    });
-    document.getElementById("btnClaude").addEventListener("click", () => {
-      const url = "https://claude.ai/new?q=" + encodeURIComponent(buildPrompt());
-      window.open(url, "_blank", "noopener");
-    });
-    document.getElementById("btnGem").addEventListener("click", async () => {
-      await copyPrompt();
-      window.open("https://gemini.google.com/", "_blank", "noopener");
-      toast("İstem kopyalandı. Gemini’de yapıştır.");
-    });
-    document.getElementById("btnCopy").addEventListener("click", copyPrompt);
+    function hidePromptBox() {
+      document.getElementById("istemKutuSarici").classList.remove("show");
+    }
 
-    document.getElementById("wolframForm").addEventListener("submit", (e) => {
+    function copyWithExec(text) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.setAttribute("aria-hidden", "true");
+      ta.style.position = "fixed";
+      ta.style.top = "0";
+      ta.style.left = "0";
+      ta.style.width = "2em";
+      ta.style.height = "2em";
+      ta.style.padding = "0";
+      ta.style.border = "none";
+      ta.style.outline = "none";
+      ta.style.boxShadow = "none";
+      ta.style.background = "transparent";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      let ok = false;
+      try {
+        ok = document.execCommand("copy");
+      } catch (e) {
+        ok = false;
+      }
+      document.body.removeChild(ta);
+      return ok;
+    }
+
+    function afterCopy(ok, text, successMsg) {
+      if (ok) {
+        hidePromptBox();
+        if (successMsg) toast(successMsg);
+        return true;
+      }
+      showPromptBox(text);
+      toast("Otomatik kopyalanamadı. Aşağıdaki metni kopyala.");
+      return false;
+    }
+
+    function copyText(text, successMsg) {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        let pending;
+        try {
+          pending = navigator.clipboard.writeText(text);
+        } catch (e) {
+          return Promise.resolve(afterCopy(copyWithExec(text), text, successMsg));
+        }
+        if (pending && typeof pending.then === "function") {
+          return pending.then(function () {
+            return afterCopy(true, text, successMsg);
+          }).catch(function () {
+            return afterCopy(copyWithExec(text), text, successMsg);
+          });
+        }
+        return Promise.resolve(afterCopy(true, text, successMsg));
+      }
+      return Promise.resolve(afterCopy(copyWithExec(text), text, successMsg));
+    }
+
+    function copyPrompt(successMsg) {
+      return copyText(buildPrompt(), successMsg || "İstem kopyalandı.");
+    }
+
+    function openExternal(url) {
+      const a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    document.getElementById("btnGpt").addEventListener("click", function () {
+      this.href = "https://chatgpt.com/?q=" + encodeURIComponent(buildPrompt());
+    });
+    document.getElementById("btnClaude").addEventListener("click", function () {
+      this.href = "https://claude.ai/new?q=" + encodeURIComponent(buildPrompt());
+    });
+    document.getElementById("btnGem").addEventListener("click", function () {
+      const p = buildPrompt();
+      const yardim = document.getElementById("geminiYardim");
+      const mesaj = document.getElementById("geminiMesaj");
+      const okMsg = "İstek kopyalandı ✓. Şimdi Gemini’yi aç, yazı kutusuna basılı tut, Yapıştır’a bas ve gönder.";
+      const failMsg = "İstek otomatik kopyalanamadı. Aşağıdaki metin kutusundaki istemi basılı tutup kopyala. Sonra Gemini’yi aç, yapıştır ve gönder.";
+      let pending = null;
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        try {
+          pending = navigator.clipboard.writeText(p);
+        } catch (e) {
+          pending = null;
+        }
+      }
+      function showHelp(ok) {
+        if (!ok) ok = copyWithExec(p);
+        mesaj.textContent = ok ? okMsg : failMsg;
+        yardim.classList.add("show");
+        if (ok) hidePromptBox();
+        else showPromptBox(p);
+        yardim.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+      if (pending && typeof pending.then === "function") {
+        pending.then(function () { showHelp(true); }).catch(function () { showHelp(false); });
+      } else {
+        showHelp(pending !== null);
+      }
+    });
+    document.getElementById("btnCopy").addEventListener("click", function () {
+      copyPrompt("İstem kopyalandı.");
+    });
+
+    document.getElementById("wolframForm").addEventListener("submit", function (e) {
       e.preventDefault();
       const q = document.getElementById("wa").value.trim();
       const url = q ? "https://www.wolframalpha.com/input?i=" + encodeURIComponent(q) : "https://www.wolframalpha.com/";
-      window.open(url, "_blank", "noopener");
+      openExternal(url);
     });
 
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js").catch(() => {});
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+      var refreshing = false;
+      navigator.serviceWorker.addEventListener("controllerchange", function () {
+        if (refreshing) return;
+        refreshing = true;
+        location.reload();
+      });
     }
   </script>
 </body>
