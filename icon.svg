@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Elif İTÜ Çalışma">
+  <rect width="512" height="512" fill="#14324A"/>
+  <circle cx="256" cy="256" r="210" fill="#0F766E"/>
+  <path d="M256 150 L400 186 V326 L256 362 Z" fill="#E8DFCC"/>
+  <path d="M256 150 L112 186 V326 L256 362 Z" fill="#FFFDF8"/>
+  <path d="M256 150 V362" stroke="#14324A" stroke-width="14" stroke-linecap="round"/>
+</svg>

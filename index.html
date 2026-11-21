@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#14324A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Elif Çalışma">
+  <meta name="description" content="İTÜ hazırlık ve 1. sınıf çalışma kısayolu">
+  <title>Elif – İTÜ Çalışma</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <style>
+    :root {
+      --navy: #14324A;
+      --navy-2: #1C4563;
+      --teal: #0F766E;
+      --teal-dark: #115E59;
+      --ink: #1A2330;
+      --muted: #5B6B7A;
+      --line: #E4DDD0;
+      --bg: #F3EFE6;
+      --card: #FFFDF8;
+      --ok: #0F766E;
+      --warn: #B45309;
+      --claude: #C96442;
+      --gpt: #10A37F;
+      --gem: #4285F4;
+      --radius: 16px;
+      --shadow: 0 8px 24px rgba(20, 50, 74, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.45;
+      padding-bottom: 48px;
+    }
+    header {
+      background: linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 70%, #0F766E 140%);
+      color: #fff;
+      padding: 22px 20px 18px;
+      padding-top: calc(22px + env(safe-area-inset-top));
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.45rem;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+    }
+    .countdown {
+      margin-top: 12px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .countdown .label { font-size: .9rem; opacity: .9; }
+    .countdown .days { font-size: 1.6rem; font-weight: 700; }
+    nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 12px 16px 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    nav a {
+      flex: 0 0 auto;
+      text-decoration: none;
+      color: var(--navy);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: .9rem;
+      font-weight: 600;
+    }
+    main { padding: 8px 16px 0; max-width: 680px; margin: 0 auto; }
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 16px 16px;
+      margin: 14px 0;
+    }
+    section h2 {
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+      color: var(--navy);
+    }
+    .lead { margin: 0 0 14px; color: var(--muted); font-size: .95rem; }
+    label { display: block; font-weight: 600; margin: 12px 0 6px; font-size: .92rem; }
+    select, textarea, input[type="text"] {
+      width: 100%;
+      font: inherit;
+      padding: 14px 12px;
+      border-radius: 12px;
+      border: 1px solid #C9C1B3;
+      background: #fff;
+      color: var(--ink);
+      min-height: 48px;
+    }
+    textarea { min-height: 88px; resize: vertical; }
+    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    button, .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 12px 14px;
+      border: 0;
+      border-radius: 14px;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      color: #fff;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn-gpt { background: var(--gpt); }
+    .btn-claude { background: var(--claude); }
+    .btn-gem { background: var(--gem); }
+    .btn-copy { background: var(--navy); }
+    .btn-link { background: var(--teal); width: 100%; }
+    .btn-ghost {
+      background: #fff;
+      color: var(--navy);
+      border: 1px solid var(--line);
+    }
+    button:active, .btn:active { transform: scale(.98); }
+    details { margin-top: 12px; }
+    details summary { cursor: pointer; font-weight: 600; color: var(--navy); }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #F6F3EC;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: .82rem;
+      margin: 8px 0 0;
+    }
+    .links { display: flex; flex-direction: column; gap: 8px; }
+    .links a, .sublinks a {
+      display: block;
+      background: #F7F4EE;
+      color: var(--navy);
+      text-decoration: none;
+      border-radius: 12px;
+      padding: 14px 14px;
+      font-weight: 600;
+      border: 1px solid var(--line);
+      min-height: 48px;
+    }
+    .links a small, .sublinks a small, .hint {
+      display: block;
+      font-weight: 400;
+      color: var(--muted);
+      font-size: .82rem;
+      margin-top: 2px;
+    }
+    .hint { margin: 8px 0 0; }
+    .wolfram {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .wolfram input { flex: 1; }
+    .wolfram button { flex: 0 0 auto; background: var(--navy); padding-inline: 16px; }
+    .steps { margin: 0; padding-left: 18px; }
+    .steps li { margin: 8px 0; }
+    .toast {
+      position: fixed;
+      left: 16px; right: 16px; bottom: 20px;
+      background: var(--navy);
+      color: #fff;
+      padding: 14px 16px;
+      border-radius: 14px;
+      text-align: center;
+      font-weight: 600;
+      box-shadow: var(--shadow);
+      display: none;
+      z-index: 20;
+    }
+    .toast.show { display: block; }
+    footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 8px 16px 24px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Elif – İTÜ Çalışma</h1>
+    <div class="countdown" id="countdown">
+      <span class="label">15 Ocak 2027 İYS’ye</span>
+      <span class="days" id="daysLeft">…</span>
+    </div>
+  </header>
+  <nav aria-label="Bölümler">
+    <a href="#calis">Çalış / Quiz</a>
+    <a href="#kaynaklar">Kaynaklar</a>
+    <a href="#videolar">Videolar</a>
+    <a href="#itu">İTÜ</a>
+    <a href="#hesap">Hesap</a>
+    <a href="#ekle">Ana ekran</a>
+  </nav>
+  <main>
+    <section id="calis">
+      <h2>Ders çalış / Quiz</h2>
+      <p class="lead">Dersi ve çalışma biçimini seç. İstem hazırlanır; sen yalnızca gönderirsin.</p>
+      <label for="ders">Ders</label>
+      <select id="ders">
+        <option value="İngilizce Hazırlık P2 / İTÜ İngilizce Yeterlik Sınavı (İYS)">İngilizce Hazırlık P2 / İYS</option>
+        <option value="MAT 103E Mathematics I (Matematik I)">MAT 103E Matematik I</option>
+        <option value="MAT 104E Mathematics II (Matematik II)">MAT 104E Matematik II</option>
+        <option value="FIZ 101E Physics I (Fizik I)">FIZ 101E Fizik I</option>
+        <option value="FIZ 102E Physics II (Fizik II)">FIZ 102E Fizik II</option>
+        <option value="KIM 101E General Chemistry (Genel Kimya)">KIM 101E Genel Kimya</option>
+        <option value="GEO derslerine giriş (Geomatik / Harita Mühendisliği birinci sınıf: ölçme, analitik geometri, vektör, programlama)">GEO giriş</option>
+        <option value="Python programlamaya giriş (NumPy / temel yazılım, GEO 108E düzeyinde)">Python</option>
+      </select>
+      <label for="mod">Çalışma biçimi</label>
+      <select id="mod">
+        <option value="anlatim">Konu anlatımı</option>
+        <option value="anlamadim">Anlamadığım yer</option>
+        <option value="soru">Soru çözümü (ipucu ile)</option>
+        <option value="quiz">10 soruluk quiz</option>
+        <option value="iys">İYS deneme bölümü</option>
+      </select>
+      <label for="konu">Konu veya soru (isteğe bağlı)</label>
+      <textarea id="konu" placeholder="Örneğin: limit, Newton yasaları, akademik kompozisyon, bu paragrafı anlamadım…"></textarea>
+      <div class="btn-row">
+        <button type="button" class="btn-gpt" id="btnGpt">ChatGPT’de aç</button>
+        <button type="button" class="btn-claude" id="btnClaude">Claude’da aç</button>
+        <button type="button" class="btn-gem" id="btnGem">Gemini</button>
+        <button type="button" class="btn-copy" id="btnCopy">Kopyala</button>
+      </div>
+      <p class="hint">ChatGPT ve Claude istemi yazı kutusuna yerleştirir, göndermez. Gemini URL’den istem almaz; istem panoya kopyalanır, sen yapıştırırsın.</p>
+      <details>
+        <summary>Hazırlanan istemi gör</summary>
+        <pre id="onizleme"></pre>
+      </details>
+    </section>
+
+    <section id="kaynaklar">
+      <h2>Kaynaklarım</h2>
+      <p class="lead">Drive klasörleri giriş isteyebilir. Aynı Google hesabıyla aç.</p>
+      <div class="links">
+        <a href="https://drive.google.com/drive/folders/1j4qG32nTVBsSrEKAWE1g4D9kNrWS1oU_" target="_blank" rel="noopener">Elif İTÜ Kaynaklar klasörü<small>Ana klasör: rehber, yol haritası, zip’ler</small></a>
+        <a href="https://docs.google.com/document/d/1S5GCD82YEC7YVbHwxmuFakVkCJ-7JCitjxwrYqHDHp8/edit" target="_blank" rel="noopener">İTÜ Yol Haritası<small>Hazırlığı erken bitir, İYS 75+, AGNO 4,00</small></a>
+        <a href="https://docs.google.com/document/d/1Qy15mwNtKDEuqVxHQUeyaBdN4JUG4vH4_PdCYliZFl0/edit" target="_blank" rel="noopener">BAŞLA – Kaynak Rehberi</a>
+        <a href="https://docs.google.com/document/d/1AcJPWMh8ip0CrRT0VLYBNZuOaopzUINk8p_IJtjco6A/edit" target="_blank" rel="noopener">Fizik I (FIZ 101) müfredat ve ücretsiz kaynaklar</a>
+        <a href="https://drive.google.com/drive/folders/1dy6xtcWwkmstMWPSTmgB8Y8iHS6dBqZd" target="_blank" rel="noopener">Harita 1. sınıf eski sorular<small>MAT, FIZ, GEO 108E</small></a>
+        <a href="https://drive.google.com/drive/folders/1e-OnOHVb_6Wg4MsJwgu8I1xa8rIKApLM" target="_blank" rel="noopener">Hazırlık eski sorular<small>İYS örnekleri, ILC, restatement</small></a>
+      </div>
+    </section>
+
+    <section id="videolar">
+      <h2>Videolar ve dersler</h2>
+      <p class="lead">Ücretsiz açık dersler. Fizik bağlantıları müfredat belgesinde doğrulanmış sayfalardır.</p>
+      <div class="links">
+        <a href="https://www.khanacademy.org/science/ap-college-physics-1" target="_blank" rel="noopener">Khan Academy – AP/College Physics 1<small>FIZ 101E</small></a>
+        <a href="https://www.khanacademy.org/science/ap-physics-2" target="_blank" rel="noopener">Khan Academy – AP Physics 2<small>FIZ 102E</small></a>
+        <a href="https://tr.khanacademy.org/science/9-sinif-fizik" target="_blank" rel="noopener">Khan Academy Türkçe – 9. sınıf fizik</a>
+        <a href="https://www.khanacademy.org/math/calculus-1" target="_blank" rel="noopener">Khan Academy – Calculus 1<small>MAT 103E</small></a>
+        <a href="https://tr.khanacademy.org/math" target="_blank" rel="noopener">Khan Academy Türkçe – Matematik</a>
+        <a href="https://www.khanacademy.org/science/chemistry" target="_blank" rel="noopener">Khan Academy – Chemistry<small>KIM 101E</small></a>
+        <a href="https://openstax.org/books/university-physics-volume-1/pages/1-introduction" target="_blank" rel="noopener">OpenStax University Physics Volume 1<small>FIZ 101E, ücretsiz kitap</small></a>
+        <a href="https://openstax.org/books/university-physics-volume-2/pages/1-introduction" target="_blank" rel="noopener">OpenStax University Physics Volume 2<small>FIZ 102E</small></a>
+        <a href="https://ocw.mit.edu/courses/8-01sc-classical-mechanics-fall-2016/" target="_blank" rel="noopener">MIT OCW 8.01SC Classical Mechanics</a>
+        <a href="https://ocw.mit.edu/courses/8-02-physics-ii-electricity-and-magnetism-spring-2007/" target="_blank" rel="noopener">MIT OCW 8.02 Physics II<small>Elektrik ve manyetizma</small></a>
+        <a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/" target="_blank" rel="noopener">MIT OCW 18.01SC Calculus</a>
+        <a href="https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/" target="_blank" rel="noopener">MIT OCW 18.06SC Linear Algebra</a>
+        <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr" target="_blank" rel="noopener">3Blue1Brown – Essence of calculus</a>
+        <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">3Blue1Brown – Essence of linear algebra</a>
+        <a href="https://github.com/kadehci-oss/awesome-itu" target="_blank" rel="noopener">GitHub – awesome-itu<small>README’deki İTÜ kaynak listesi</small></a>
+        <a href="https://github.com/kadehci-oss/math" target="_blank" rel="noopener">GitHub – OSSU Math</a>
+        <a href="https://github.com/kadehci-oss/PythonDataScienceHandbook" target="_blank" rel="noopener">GitHub – Python Data Science Handbook</a>
+        <a href="https://colab.research.google.com/github/kadehci-oss/PythonDataScienceHandbook/blob/master/notebooks/00.00-Preface.ipynb" target="_blank" rel="noopener">Colab’da aç – Python Data Science Handbook<small>Kurulum gerekmez</small></a>
+        <a href="https://github.com/kadehci-oss/geopandas-tutorial" target="_blank" rel="noopener">GitHub – geopandas-tutorial</a>
+        <a href="https://colab.research.google.com/github/kadehci-oss/geopandas-tutorial/blob/main/01-introduction-geospatial-data.ipynb" target="_blank" rel="noopener">Colab’da aç – GeoPandas giriş<small>Kurulum gerekmez</small></a>
+      </div>
+    </section>
+
+    <section id="itu">
+      <h2>İTÜ</h2>
+      <div class="links">
+        <a href="https://ninova.itu.edu.tr" target="_blank" rel="noopener">Ninova<small>Ders dosyaları, ödev, duyuru</small></a>
+        <a href="https://obs.itu.edu.tr" target="_blank" rel="noopener">OBS (Öğrenci Bilgi Sistemi)<small>Ders kayıt, notlar</small></a>
+        <a href="https://ydy.itu.edu.tr" target="_blank" rel="noopener">Yabancı Diller Yüksekokulu</a>
+        <a href="https://ydy.itu.edu.tr/programlar/lisans-hazirlik-programi/yeterlik-sinavi" target="_blank" rel="noopener">İYS – yeterlik sınavı sayfası<small>Örnek sınav ve puan dağılımı</small></a>
+        <a href="https://www.takvim.sis.itu.edu.tr/AkademikTakvim/TR/akademik-takvim/index.php" target="_blank" rel="noopener">İTÜ akademik takvim</a>
+        <a href="https://ilc.itu.edu.tr" target="_blank" rel="noopener">ILC – bireysel çalışma merkezi</a>
+      </div>
+    </section>
+
+    <section id="hesap">
+      <h2>Hesap makinesi / grafik</h2>
+      <form id="wolframForm" class="wolfram">
+        <input type="text" id="wa" placeholder="Örneğin: integral of x^2" aria-label="Wolfram Alpha sorgusu">
+        <button type="submit">Wolfram</button>
+      </form>
+      <p class="hint">Boş bırakırsan Wolfram Alpha ana sayfası açılır.</p>
+      <div class="links" style="margin-top:12px">
+        <a href="https://www.wolframalpha.com/" target="_blank" rel="noopener">Wolfram Alpha</a>
+        <a href="https://www.desmos.com/calculator" target="_blank" rel="noopener">Desmos grafik hesap makinesi</a>
+        <a href="https://www.geogebra.org/calculator" target="_blank" rel="noopener">GeoGebra hesap makinesi</a>
+      </div>
+    </section>
+
+    <section id="ekle">
+      <h2>Ana ekrana ekleme</h2>
+      <p class="lead">Bu sayfayı telefonunda bir uygulama gibi açabilirsin.</p>
+      <ol class="steps">
+        <li><strong>iPhone (Safari):</strong> Paylaş düğmesine (kare ve ok) dokun, <strong>Ana Ekrana Ekle</strong>’yi seç, Ekle’ye bas.</li>
+        <li><strong>Android (Chrome):</strong> Sağ üstteki menüye (üç nokta) dokun, <strong>Ana ekrana ekle</strong> veya <strong>Uygulamayı yükle</strong>’yi seç.</li>
+      </ol>
+    </section>
+  </main>
+  <footer>Herkese açık bir çalışma kısayoludur. Kişisel not içermez.</footer>
+  <div class="toast" id="toast" role="status"></div>
+  <script>
+    const IYS = new Date("2027-01-15T00:00:00+03:00");
+
+    function updateCountdown() {
+      const now = new Date();
+      const fmt = new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Istanbul", year: "numeric", month: "2-digit", day: "2-digit" });
+      const todayParts = fmt.format(now); // YYYY-MM-DD
+      const today = new Date(todayParts + "T00:00:00+03:00");
+      const diff = Math.round((IYS - today) / 86400000);
+      const el = document.getElementById("daysLeft");
+      if (diff > 1) el.textContent = diff + " gün";
+      else if (diff === 1) el.textContent = "1 gün";
+      else if (diff === 0) el.textContent = "bugün";
+      else el.textContent = "tarih geçti";
+    }
+    updateCountdown();
+
+    const KURALLAR = [
+      "Türkçe anlat.",
+      "Uydurma. Emin olmadığın bir kuralı, tarihi, formülü veya kaynağı uydurma; bilmiyorsan bunu söyle.",
+      "Konu anlatırken adım adım ilerle. Her bölümün sonunda kısa bir kontrol sorusu sor; cevabı hemen verme, öğrencinin denemesini bekle.",
+      "Soru çözümünde cevabı hemen gösterme. Önce ipucu ver, öğrenci isterse bir sonraki adımı söyle, en son tam çözümü ver. Öğrenci 'direkt çözümü göster' derse tam çözümü göster.",
+      "Quiz istiyorsa önce yalnızca soruları göster. Cevap anahtarını ancak öğrenci cevapladıktan sonra veya ayrıca istediğinde ver. Yanlışları tek tek açıkla.",
+      "Sayısal hesapları dikkatle kontrol et."
+    ];
+
+    const MOD_GOREV = {
+      anlatim: "Konuyu baştan, açık ve anlaşılır biçimde anlat. Tanım, mantık, formül (varsa) ve çözümlü bir örnek ver. Her bölümün sonunda bir kontrol sorusu sor.",
+      anlamadim: "Öğrencinin takıldığı yeri bul. O adımı başka bir yoldan, daha basit bir dille ve günlük bir örnekle yeniden anlat. Eksik bir ön bilgi varsa önce onu tamamla.",
+      soru: "Verilen soruyu (veya bu dersten uygun bir alıştırma sorusunu) birlikte çöz. Önce ipucu, sonra adım, en son tam çözüm.",
+      quiz: "Bu dersten (ve belirtilen konudan) 10 soruluk bir quiz hazırla. Önce yalnızca soruları numaralandırarak göster. Cevap anahtarını ayrı bir bölümde, sorulardan sonra ve açık bir başlıkla ver. Her yanlış için kısa açıklama yazmayı teklif et.",
+      iys: "İTÜ İngilizce Yeterlik Sınavı (İYS) formatında kısa bir deneme bölümü hazırla. Sınav iki aşamadır: 1) dil kullanımı (metin tamamlama ve anlamca en yakın cümle) ile okuma; 2) akademik kompozisyon, entegre yazma ve not alarak dinleme. Öğrenci bir alt bölüm belirtmediyse okuma veya dil kullanımı denemesi yap. Önce soruları göster, cevap anahtarını sonra ver. Konuşma bölümü bu sınavda yoktur."
+    };
+
+    function buildPrompt() {
+      const ders = document.getElementById("ders").value;
+      const mod = document.getElementById("mod").value;
+      const konu = document.getElementById("konu").value.trim();
+      let text = "Sen İTÜ lisans ve hazırlık öğrencisi için bir ders koçusun.\n\n";
+      text += "Ders: " + ders + "\n";
+      text += "İstenen çalışma: " + MOD_GOREV[mod] + "\n";
+      if (konu) text += "Öğrencinin yazdığı konu, soru veya metin:\n" + konu + "\n";
+      else text += "Öğrenci ayrıca bir konu yazmadı; dersin temel ve güncel konularından ilerle.\n";
+      text += "\nKurallar:\n- " + KURALLAR.join("\n- ");
+      return text;
+    }
+
+    function refreshPreview() {
+      document.getElementById("onizleme").textContent = buildPrompt();
+    }
+    ["ders", "mod", "konu"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", refreshPreview);
+      document.getElementById(id).addEventListener("change", refreshPreview);
+    });
+    refreshPreview();
+
+    function toast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toast._id);
+      toast._id = setTimeout(() => t.classList.remove("show"), 2600);
+    }
+
+    async function copyPrompt() {
+      const p = buildPrompt();
+      try {
+        await navigator.clipboard.writeText(p);
+        toast("İstem kopyalandı.");
+        return true;
+      } catch (e) {
+        toast("Otomatik kopyalanamadı. Aşağıdaki istemi elle kopyala.");
+        return false;
+      }
+    }
+
+    document.getElementById("btnGpt").addEventListener("click", () => {
+      const url = "https://chatgpt.com/?q=" + encodeURIComponent(buildPrompt());
+      window.open(url, "_blank", "noopener");
+    });
+    document.getElementById("btnClaude").addEventListener("click", () => {
+      const url = "https://claude.ai/new?q=" + encodeURIComponent(buildPrompt());
+      window.open(url, "_blank", "noopener");
+    });
+    document.getElementById("btnGem").addEventListener("click", async () => {
+      await copyPrompt();
+      window.open("https://gemini.google.com/", "_blank", "noopener");
+      toast("İstem kopyalandı. Gemini’de yapıştır.");
+    });
+    document.getElementById("btnCopy").addEventListener("click", copyPrompt);
+
+    document.getElementById("wolframForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = document.getElementById("wa").value.trim();
+      const url = q ? "https://www.wolframalpha.com/input?i=" + encodeURIComponent(q) : "https://www.wolframalpha.com/";
+      window.open(url, "_blank", "noopener");
+    });
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    }
+  </script>
+</body>
+</html>
